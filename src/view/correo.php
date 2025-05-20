@@ -19,7 +19,7 @@
       border: 1px solid #dddddd;
     }
     .header {
-      background-color: #004aad;
+      background-color:rgb(201, 56, 197);
       color: white;
       padding: 20px;
       text-align: center;
@@ -37,7 +37,7 @@
     }
     .button {
       display: inline-block;
-      background-color: #004aad;
+      background-color:rgb(221, 142, 220);
       color: #ffffff !important;
       padding: 12px 25px;
       margin: 20px 0;
