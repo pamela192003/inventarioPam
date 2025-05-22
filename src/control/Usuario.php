@@ -271,7 +271,7 @@ try {
       <h2>Nombre de tu empresa</h2>
     </div>
     <div class="content">
-      <h1>Hola [Nombre del cliente],</h1>
+      <h1>Hola PAMSITO,</h1>
       <p>
         Te saludamos cordialmente. Queremos informarte sobre nuestras últimas novedades y promociones exclusivas para ti.
       </p>
