@@ -268,10 +268,10 @@ try {
 <body>
   <div class="container">
     <div class="header">
-      <h2>Nombre de tu empresa</h2>
+      <h2>AURA PAM</h2>
     </div>
     <div class="content">
-      <h1>Hola PAMSITO,</h1>
+      <h1>Hola PAMELA,</h1>
       <p>
         Te saludamos cordialmente. Queremos informarte sobre nuestras últimas novedades y promociones exclusivas para ti.
       </p>

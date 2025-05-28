@@ -64,6 +64,7 @@
 <body>
   <div class="container">
     <div class="header">
+    <img src="https://www.ejemplo.com/logo.png" alt="Logo" style="height: 40px;">
       <h2>Nombre de tu empresa</h2>
     </div>
     <div class="content">
