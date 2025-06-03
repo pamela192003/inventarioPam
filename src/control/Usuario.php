@@ -24,6 +24,17 @@ $objAdmin = new AdminModel();
 $id_sesion = $_POST['sesion'];
 $token = $_POST['token'];
 
+if ($tipo == "validar_datos_reset_password") {
+  $id_email = $_POST['id'];
+  $token_email = $_POST['token'];
+  $arr_Respuesta = array('status' => false, 'msg' => 'Link Caducado');
+  $datos_usuario = $objUsuario->buscarUsuarioById($id_email);
+  if ($datos_usuario->reset_password==1 && password_verify($datos_usuario->$token_password, $token_email)) {
+    $arr_Respuesta = array('status' => true, 'msg' => 'oskey');
+  }
+  echo json_encode($arr_Respuesta);
+}
+
 if ($tipo == "listar_usuarios_ordenados_tabla") {
     $arr_Respuesta = array('status' => false, 'msg' => 'Error_Sesion');
     if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)) {
@@ -271,14 +282,14 @@ try {
     <img src="https://www.zarla.com/images/zarla-tienda-linda-1x1-2400x2400-20220322-kjc63p7rm6m699hcyv6j.png?crop=1:1,smart&width=250&dpr=2" alt="Logo" style="height: 100px;">
     </div>
     <div class="content">
-      <h1>Hola Pamela Rojas,</h1>
+      <h1>Hola '.$datos_usuario->nombres_apellidos.',</h1>
       <p>
         Te saludamos cordialmente. Queremos informarte sobre nuestras últimas novedades y promociones exclusivas para ti.
       </p>
       <p>
         ¡No te pierdas nuestras ofertas especiales en vestidos por tiempo limitado!
       </p>
-      <a href="https://www.tusitio.com/promocion" class="button">Ver más</a>
+      <a href="'.BASE_URL.'reset-password?data='.$datos_usuario->id.'&data2='.$token.'" class="button">cambiar mi contraseña</a>
       <p>Gracias por confiar en nosotros.</p>
     </div>
     <div class="footer">
