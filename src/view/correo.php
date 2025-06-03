@@ -19,7 +19,7 @@
       border: 1px solid #dddddd;
     }
     .header {
-      background-color:rgb(201, 56, 197);
+      background-color:rgb(219, 230, 137);
       color: white;
       padding: 20px;
       text-align: center;
@@ -37,7 +37,7 @@
     }
     .button {
       display: inline-block;
-      background-color:rgb(221, 142, 220);
+      background-color:rgb(123, 62, 58);
       color: #ffffff !important;
       padding: 12px 25px;
       margin: 20px 0;
@@ -64,22 +64,21 @@
 <body>
   <div class="container">
     <div class="header">
-    <img src="https://www.ejemplo.com/logo.png" alt="Logo" style="height: 40px;">
-      <h2>Nombre de tu empresa</h2>
+    <img src="https://www.zarla.com/images/zarla-tienda-linda-1x1-2400x2400-20220322-kjc63p7rm6m699hcyv6j.png?crop=1:1,smart&width=250&dpr=2" alt="Logo" style="height: 100px;">
     </div>
     <div class="content">
-      <h1>Hola [Nombre del cliente],</h1>
+      <h1>Hola Pamela Rojas,</h1>
       <p>
         Te saludamos cordialmente. Queremos informarte sobre nuestras últimas novedades y promociones exclusivas para ti.
       </p>
       <p>
-        ¡No te pierdas nuestras ofertas especiales por tiempo limitado!
+        ¡No te pierdas nuestras ofertas especiales en vestidos por tiempo limitado!
       </p>
       <a href="https://www.tusitio.com/promocion" class="button">Ver más</a>
       <p>Gracias por confiar en nosotros.</p>
     </div>
     <div class="footer">
-      © 2025 Nombre de tu empresa. Todos los derechos reservados.<br>
+      RIENDA LINDA Todos los derechos reservados.<br>
       <a href="https://www.tusitio.com/desuscribirse">Cancelar suscripción</a>
     </div>
   </div>
