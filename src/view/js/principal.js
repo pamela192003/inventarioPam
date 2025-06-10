@@ -169,24 +169,80 @@ function cargar_sede_filtro(sedes) {
 
 // ------------------------------------------- FIN DE DATOS DE CARGA PARA FILTRO DE BUSQUEDA -----------------------------------------------
 
-async function validar_datos_reset_passwprd() {
+async function validar_datos_reset_password() {
     let id = document.getElementById('data').value;
     let token = document.getElementById('data2').value;
+
+    const formData = new FormData();
     formData.append('id', id);
     formData.append('token', token);
+    formData.append('sesion', '');
+
     try {
-        let respuesta = await fetch(base_url_server + 'src/control/Usuario.php?tipo=validar_datos_reset_password', {
+        let respuesta = await fetch(base_url_server + 'src/control/usuario.php?tipo=validar_datos_reset_password', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
             body: formData
         });
         let json = await respuesta.json();
-        if (json.status) {
+        if (json.status == false) {
+            Swal.fire({
+                type: 'error',
+                title: 'Error de link',
+                text: "link caducado, por favorsito verifique su correo",
+                confirmButtonClass: 'btn btn-confirm mt-2',
+                footer: '',
+                timer: 1000
+            });
+           let formulario = document.getElementById('frm_reset_password');
+formulario.innerHTML = `
+  <div style="text-align: center; padding: 30px;">
+    <h2 style="color: #e74c3c;">Enlace caducado</h2>
+    <p>Este enlace de recuperación ya fue utilizado o ha expirado. Por motivos de seguridad, cada enlace solo puede usarse una vez.</p>
+    <a href="/login" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #6c3483; color: #fff; text-decoration: none; border-radius: 6px;">
+      Ir al inicio de sesión
+    </a>
+  </div>
+`;
+
+
+
+
+            //location.replace(base_url + "login");
         }
         //console.log(respuesta);
     } catch (e) {
         console.log("Error al cargar instituciones" + e);
-    } 
-        
+    }
+}
+function validar_imputs_password() {
+    let pass1 = document.getElementById('password').value;
+    let pass2 = document.getElementById('password1').value;
+
+    if (pass1 !== pass2) {
+        swal.fire({
+            type: 'error',
+            title: 'Error',
+            text: "Contraseñas no coinciden",
+            footer: '',
+            timer: 1500
+        });
+        return;
+    }
+    if (pass1.length<8 && pass2.length<8) {
+        swal.fire({
+            type: 'error',
+            title: 'Error',
+            text: "La Contrasela tiene que ser minimito 8 caracteres",
+            footer: '',
+            timer: 1500
+        });
+    } else {
+        actualizar_password();
+    }
+    
+}
+async function actualizar_password() {
+     
 }

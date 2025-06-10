@@ -92,20 +92,23 @@
 
 <body>
     <input type="hidden" id="data" value="<?php echo $_GET['data']; ?>">
-    <input type="hidden" id="data2" value="<?php echo $_GET['data2']; ?>">
+    <input type="hidden" id="data2" value="<?php echo urldecode($_GET['data2']); ?>">
   <div class="login-container">
     <h1>Recuperar contraseña</h1>
     <img src="https://www.zarla.com/images/zarla-tienda-linda-1x1-2400x2400-20220322-kjc63p7rm6m699hcyv6j.png?crop=1:1,smart&width=250&dpr=2" alt="" width="100%">
-    <h4>Sistema de Control de Inventario</h4>
+    
     <form id="frm_reset_password">
       <input type="text" name="password" id="password" placeholder="nueva contraseña" required>
-      <input type="text" name="password" id="password" placeholder="confirmar contraseña" required>
-      <button type="submit">Actualizar Contraseña</button>
+      <input type="text" name="password1" id="password1" placeholder="confirmar contraseña" required>
+      <button type="button" onclick="validar_imputs_password()">Actualizar Contraseña</button>
     </form>
-    <a href="#">¿Olvidaste tu contraseña?</a>
+  
   </div>
 </body>
 <script src="<?php echo BASE_URL; ?>src/view/js/principal.js"></script>
+<script>
+validar_datos_reset_password();
+</script>
 <!-- Sweet Alerts Js-->
 <script src="<?php echo BASE_URL ?>src/view/pp/plugins/sweetalert2/sweetalert2.min.js"></script>
 
