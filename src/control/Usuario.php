@@ -175,6 +175,41 @@ if ($tipo == "sent_email_password") {
         $update = $objUsuario->updateResetPassword($datos_sesion->id_usuario, $llave, 1);
         if ($update) {
 
+if ($tipo == 'actualizar_password_reset') {
+   $id = $_POST['id'];
+    $token_email = $_POST['token'];
+    $password = $_POST['password'];
+    $arrRespuesta = array('status' => false, 'mensaje' => 'Token inválido o expirado');
+    
+    // Buscar usuario y validar token (igual que en validar_datos_reset_password)
+    $datos_usuario = $objUsuario->buscarUsuarioById($id);
+    
+    if ($datos_usuario && $datos_usuario->reset_password == 1 && password_verify($datos_usuario->token_password, $token_email)) {
+        // Encriptar nueva contraseña
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        
+        // Actualizar contraseña en base de datos
+        $actualizar = $objUsuario->actualizarPassword($id, $passwordHash);
+        
+        if ($actualizar) {
+            // Limpiar campos de reset después de actualizar exitosamente
+            $limpiar_reset = $objUsuario->updateResetPassword($id, '', 0);
+            
+            if ($limpiar_reset) {
+                $arrRespuesta = array('status' => true, 'mensaje' => 'Contraseña actualizada correctamente');
+            } else {
+                $arrRespuesta = array('status' => true, 'mensaje' => 'Contraseña actualizada correctamente');
+            }
+        } else {
+            $arrRespuesta = array('status' => false, 'mensaje' => 'Error al actualizar la contraseña');
+        }
+    }
+    
+    echo json_encode($arrRespuesta);
+}
+
+
+
 
             //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
