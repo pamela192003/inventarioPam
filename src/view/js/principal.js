@@ -243,14 +243,16 @@ function validar_imputs_password() {
     }
     
 }
+
+
 async function actualizar_password() {
-     const id = document.getElementById('data').value;
-    const token = document.getElementById('data2').value;
-    const password = passwordInput.value;
+    const id = document.getElementById('data').value;
+    const password = document.getElementById('password').value;
+    
     
     const formData = new FormData();
     formData.append('id', id);
-    formData.append('token', token);
+    formData.append('token', '');
     formData.append('password', password);
     formData.append('sesion', '');
     
@@ -268,13 +270,12 @@ async function actualizar_password() {
             await Swal.fire({
                 type: 'success',
                 title: '¡Contraseña actualizada!',
-                text: 'Tu contraseña ha sido actualizada correctamente. Serás redirigido al login.',
+                text: 'Tu contraseña ha sido actualizada correctamente.',
                 confirmButtonClass: 'btn btn-confirm mt-2',
                 timer: 3000,
                 timerProgressBar: true
             });
             
-            // Redirigir al login después de 3 segundos
             setTimeout(() => {
                 location.replace(base_url + "login");
             }, 3000);

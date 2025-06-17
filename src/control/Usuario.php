@@ -1,4 +1,8 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 session_start();
 require_once('../model/admin-sesionModel.php');
 require_once('../model/admin-usuarioModel.php');
@@ -11,9 +15,7 @@ require '../../vendor/phpmailer/phpmailer/src/SMTP.php';
 
 $tipo = $_GET['tipo'];
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+
 
 //instanciar la clase categoria model
 $objSesion = new SessionModel();
@@ -176,15 +178,16 @@ if ($tipo == "sent_email_password") {
         if ($update) {
 
 if ($tipo == 'actualizar_password_reset') {
-   $id = $_POST['id'];
+    $id = $_POST['id'];
     $token_email = $_POST['token'];
     $password = $_POST['password'];
+    
     $arrRespuesta = array('status' => false, 'mensaje' => 'Token inválido o expirado');
     
     // Buscar usuario y validar token (igual que en validar_datos_reset_password)
     $datos_usuario = $objUsuario->buscarUsuarioById($id);
     
-    if ($datos_usuario && $datos_usuario->reset_password == 1 && password_verify($datos_usuario->token_password, $token_email)) {
+    if ($datos_usuario && $datos_usuario->reset_password ) {
         // Encriptar nueva contraseña
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         
@@ -193,7 +196,10 @@ if ($tipo == 'actualizar_password_reset') {
         
         if ($actualizar) {
             // Limpiar campos de reset después de actualizar exitosamente
-            $limpiar_reset = $objUsuario->updateResetPassword($id, '', 0);
+            $token = '';
+            $estado = 0;
+            $limpiar_reset = $objUsuario->updateResetPassword($id, $token, $estado);
+        
             
             if ($limpiar_reset) {
                 $arrRespuesta = array('status' => true, 'mensaje' => 'Contraseña actualizada correctamente');
@@ -207,8 +213,6 @@ if ($tipo == 'actualizar_password_reset') {
     
     echo json_encode($arrRespuesta);
 }
-
-
 
 
             //Import PHPMailer classes into the global namespace
