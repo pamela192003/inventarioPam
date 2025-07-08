@@ -30,12 +30,9 @@ if (!isset($ruta[1]) || $ruta[1]=="") {
     } else {
         $respuesta = json_decode($response);
        // print_r($respuesta);
-      
-        
-        ?>
-        <!--
-
-        <!DOCTYPE html>
+      $contenido_pdf = '';
+     $contenido_pdf = '
+           <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -45,56 +42,68 @@ if (!isset($ruta[1]) || $ruta[1]=="") {
       font-family: Arial, sans-serif;
       margin: 40px;
     }
+
     h2 {
       text-align: center;
       text-transform: uppercase;
     }
+
     .info {
-      margin-top: 30px;
       margin-bottom: 20px;
-      line-height: 1.8;
     }
-    .info span {
+
+    .info p {
+      margin: 5px 0;
+    }
+
+    .info span.label {
       font-weight: bold;
+      display: inline-block;
+      width: 100px;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 40px;
+      margin-top: 20px;
     }
+
     table, th, td {
       border: 1px solid black;
-      text-align: center;
-      padding: 8px;
     }
+
+    th, td {
+      text-align: center;
+      padding: 5px;
+    }
+
     .firma-container {
+      margin-top: 80px;
       display: flex;
       justify-content: space-between;
-      margin-top: 80px;
+      padding: 0 40px;
     }
+
     .firma {
       text-align: center;
-      width: 45%;
     }
-    .firma hr {
-      width: 80%;
-    }
+
     .fecha {
       text-align: right;
-      margin-top: 20px;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
 
-  <h2>Papeleta de Rotación de Bienes</h2>
+  <h2>PAPELETA DE ROTACIÓN DE BIENES</h2>
 
   <div class="info">
-    <div><span>ENTIDAD:</span> DIRECCION REGIONAL DE EDUCACION - AYACUCHO</div>
-    <div><span>AREA:</span> OFICINA DE ADMINISTRACIÓN</div>
-    <div><span>ORIGEN:</span><?php echo $respuesta->amb_origen->codigo.' - '.$respuesta->amb_origen->detalle;?></div>
-    <div><span>DESTINO:</span><?php echo $respuesta->amb_destino->codigo.' - '.$respuesta->amb_destino->detalle;?></div>
-    <div><span>MOTIVO (*):</span><?php echo $respuesta->movimiento->descripcion?></div>
+    <p><span class="label">ENTIDAD:</span> DIRECCIÓN REGIONAL DE EDUCACIÓN - AYACUCHO</p>
+    <p><span class="label">ÁREA:</span> OFICINA DE ADMINISTRACIÓN</p>
+    <p><span class="label">ORIGEN:</span><'.$respuesta->amb_origen->codigo .' - '.$respuesta->amb_origen->detalle .'></p>
+    <p><span class="label">DESTINO:</span><'.$respuesta->amb_destino->codigo .' - '. $respuesta->amb_destino->detalle.'?></p>
+    <p><span class="label">MOTIVO (*):</span>'.$respuesta->movimiento->descripcion.'</p>
   </div>
 
   <table>
@@ -109,71 +118,96 @@ if (!isset($ruta[1]) || $ruta[1]=="") {
         <th>ESTADO</th>
       </tr>
     </thead>
-    <tbody>
-  <?php
-  $contador = 1;
-  foreach ($respuesta->detalle as $bien) {
-      echo "<tr>";
-      echo "<td>" . str_pad($contador, 2, '0', STR_PAD_LEFT) . "</td>";
-      echo "<td>" . htmlspecialchars($bien->cod_patrimonial) . "</td>";
-      echo "<td>" . htmlspecialchars($bien->denominacion) . "</td>";
-      echo "<td>" . htmlspecialchars($bien->marca) . "</td>";
-      echo "<td>" . htmlspecialchars($bien->color) . "</td>";
-      echo "<td>" . htmlspecialchars($bien->modelo) . "</td>";
-      echo "<td>" . htmlspecialchars($bien->estado_conservacion) . "</td>";
-      echo "</tr>";
-      $contador++;
-  }
-     ?>
+      <tbody>
+      ';
+ 
+    $contador = 1;
+    foreach ($respuesta->detalle as $bien) {
+       $contenido_pdf .= "<tr>";
+        $contenido_pdf .=  "<td>" . $contador . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->cod_patrimonial . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->denominacion . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->marca . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->color . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->modelo . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->estado_conservacion . "</td>";
+        $contenido_pdf .=  "</tr>";
+        $contador +=1;
+    }
+      
+      if (isset($respuesta->movimiento->fecha_registro) && $respuesta->movimiento->fecha_registro != '') {
+                setlocale(LC_TIME, 'es_ES.UTF-8', 'spanish');
+                $fecha = strtotime($respuesta->movimiento->fecha_registro);
+                // Si no funciona setlocale en el servidor, usar un array de meses en español
+                $meses = [
+                    1 => 'enero',
+                    2 => 'febrero',
+                    3 => 'marzo',
+                    4 => 'abril',
+                    5 => 'mayo',
+                    6 => 'junio',
+                    7 => 'julio',
+                    8 => 'agosto',
+                    9 => 'septiembre',
+                    10 => 'octubre',
+                    11 => 'noviembre',
+                    12 => 'diciembre'
+                ];
+                $dia = date('d', $fecha);
+                $mes = $meses[(int)date('m', $fecha)];
+                $anio = date('Y', $fecha);
+                $contenido_pdf.= "Ayacucho, $dia de $mes del $anio";
+            }
+
+$contenido_pdf .= '
     </tbody>
   </table>
 
-  <div class="fecha">
-  <p>
-    Ayacucho,
-    <?php
-      $fecha = $respuesta->movimiento->fecha_registro; // del objeto JSON/base de datos
-      $meses = [
-        "01" => "enero", "02" => "febrero", "03" => "marzo",
-        "04" => "abril", "05" => "mayo", "06" => "junio",
-        "07" => "julio", "08" => "agosto", "09" => "septiembre",
-        "10" => "octubre", "11" => "noviembre", "12" => "diciembre"
-      ];
 
-      $dia = date("d", strtotime($fecha));
-      $mes = $meses[date("m", strtotime($fecha))];
-      $anio = date("Y", strtotime($fecha));
-
-      echo "$dia de $mes del $anio";
-    ?>
-  </p>
-</div>
 
   <div class="firma-container">
     <div class="firma">
-      <hr>
-      ENTREGUÉ CONFORME
+      <p>------------------------------</p>
+      <p>ENTREGUÉ CONFORME</p>
     </div>
     <div class="firma">
-      <hr>
-      RECIBÍ CONFORME
+      <p>------------------------------</p>
+      <p>RECIBÍ CONFORME</p>
     </div>
   </div>
 
 </body>
 </html>
-    --<
- 
-<?php
-require_once('./vendor/tecnickom/tcpdf/tcpdf.php');
+';
 
-$pdf = new TCPDF();
+  
+    require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
+
+    $pdf = new TCPDF();
+
+    // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('Pamsito');
-$pdf->SetTitle('TCPDF Example 006');
+$pdf->SetAuthor('Marycielo');
+$pdf->SetTitle('Reporte de movimiento');
 
+//asignar los margenes
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 
+// asignar salto de pagina automatico
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
+// asignar tipo de letra y tamaño
+$pdf->SetFont('helvetica', 'B', 9);
+
+// añadir pagina
+$pdf->AddPage();
+
+//
+$pdf->writeHTML($contenido_pdf);
+
+//Close and output PDF document
+ob_clean();
+$pdf->Output('example_006.pdf', 'I');
+
+        
     }
