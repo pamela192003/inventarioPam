@@ -217,22 +217,26 @@ if ($tipo== "buscar_movimiento_id") {
         $arrUsuario = $objUsuario->buscarUsuarioById($arrMovimiento->id_usuario_registro);
         $arrIes= $objInstitucion->buscarInstitucionById($arrMovimiento->id_ies);
         $arrDetalle = $objMovimiento->buscarDetalle_MovimientoByMovimiento($id_movimiento);
-        $array_bienes = array();
-        foreach ($arrDetalle as $bien ) {
-            $id_bien=$bien->id_bien;
+        $arraybienes = array();
+       foreach ($arrDetalle as $bien) {
+            $id_bien = $bien->id_bien;
             $res_bien = $objBien->buscarBienById($id_bien);
+            if ($res_bien) {
+                array_push($arraybienes, $res_bien); // Uso de array_push para agregar el bien
+            }
         }
+        //buscar los detalles de movimiento
         $arr_Respuesta['movimiento'] = $arrMovimiento;
         $arr_Respuesta['amb_origen'] = $arrAmbOrigen;
         $arr_Respuesta['amb_destino'] = $arrAmbDestino;
         $arr_Respuesta['datos_usuario'] = $arrUsuario;
         $arr_Respuesta['datos_ies'] = $arrIes;
         $arr_Respuesta['detalle'] = $arrDetalle;
+        $arr_Respuesta['bienes'] = $arraybienes;
         $arr_Respuesta['status'] = true;
         $arr_Respuesta['msg'] = 'correcto';
-
-
     }
     echo json_encode($arr_Respuesta);
-
 }
+
+
