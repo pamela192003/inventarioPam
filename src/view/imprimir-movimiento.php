@@ -207,7 +207,7 @@ $pdf->writeHTML($contenido_pdf);
 
 //Close and output PDF document
 ob_clean();
-$pdf->Output('example_006.pdf', 'I');
+$pdf->Output('sd', 'I');
 
         
     }
