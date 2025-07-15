@@ -204,25 +204,25 @@ class MYPDF extends TCPDF {
         $logo_left  = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABjBsifx4kJK7C6ewR1dqJ8DGpEoKk6McLQ&s';
         $logo_right = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_BSnUuKJh7yQ05Oav2g2R4W3L0o99TfFS-A&s';
 
-       $this->Image($logo_left, 15, 10, 38, 30);  // ancho y alto de 25mm
+       $this->Image($logo_left, 15, 10, 38, 30); 
       $this->Image($logo_right, 170, 10, 25, 25);
 
 
-        $this->SetXY(55, 12); // desplazado al centro visual real
+        $this->SetXY(55, 12); 
         $this->SetFont('helvetica', 'B', 11);
-        $this->SetTextColor(0, 70, 140); // Azul fuerte
+        $this->SetTextColor(0, 70, 140); 
         $this->Cell(100, 6, 'GOBIERNO REGIONAL DE AYACUCHO', 0, 1, 'C');
 
        
         $this->SetX(55);
         $this->SetFont('helvetica', 'I', 10);
-        $this->SetTextColor(85, 85, 85); // Gris oscuro
+        $this->SetTextColor(85, 85, 85); 
         $this->Cell(100, 6, 'DIRECCIÓN REGIONAL DE EDUCACIÓN DE AYACUCHO', 0, 1, 'C');
 
 
         $this->SetX(55);
         $this->SetFont('helvetica', 'I', 10);
-        $this->SetTextColor(85, 85, 85); // Gris oscuro
+        $this->SetTextColor(85, 85, 85); 
         $this->Cell(100, 6, 'DIRECCION DE ADMINISTRACION', 0, 1, 'C');
 
 
@@ -230,26 +230,22 @@ class MYPDF extends TCPDF {
         $this->SetLineWidth(0.8);
         $this->Line(15, 44, 195, 44);
 
-        $this->Ln(5); // Espacio adicional
+        $this->Ln(5); 
     }
 
   public function Footer() {
-    // Posicionar a 15 mm del final de la página
     $this->SetY(-15);
 
-    // Línea superior del footer
     $this->SetDrawColor(189, 195, 199);
     $this->SetLineWidth(0.5);
     $this->Line(15, $this->GetY() - 5, 195, $this->GetY() - 5);
 
-    // Estilo del texto
     $this->SetFont('helvetica', 'I', 8);
     $this->SetTextColor(100, 100, 100);
 
-    // Texto de número de página centrado
     $this->Cell(0, 10, 'Página ' . $this->getAliasNumPage() . ' de ' . $this->getAliasNbPages(), 0, 0, 'C');
 
-    // Reset de estilo
+  
     $this->SetTextColor(0, 0, 0);
     $this->SetLineWidth(0.2);
 
@@ -258,7 +254,6 @@ class MYPDF extends TCPDF {
 
 
 $pdf = new MYPDF();
-// set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Marycielo');
 $pdf->SetTitle('Reporte de movimiento');
