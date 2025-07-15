@@ -92,6 +92,20 @@ if (!isset($ruta[1]) || $ruta[1]=="") {
       text-align: right;
       margin-top: 30px;
     }
+       table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 9pt;
+  }
+  th, td {
+    border: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+  }
+  thead th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+
   </style>
 </head>
 <body>
@@ -181,35 +195,88 @@ $contenido_pdf .= '
 ';
 
   
-    require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
+   
+require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
 
-  
+class MYPDF extends TCPDF {
+    public function Header() {
+       
+        $logo_left  = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABjBsifx4kJK7C6ewR1dqJ8DGpEoKk6McLQ&s';
+        $logo_right = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_BSnUuKJh7yQ05Oav2g2R4W3L0o99TfFS-A&s';
 
-    $pdf = new TCPDF();
+       $this->Image($logo_left, 15, 10, 38, 30);  // ancho y alto de 25mm
+      $this->Image($logo_right, 170, 10, 25, 25);
 
-    // set document information
+
+        $this->SetXY(55, 12); // desplazado al centro visual real
+        $this->SetFont('helvetica', 'B', 11);
+        $this->SetTextColor(0, 70, 140); // Azul fuerte
+        $this->Cell(100, 6, 'GOBIERNO REGIONAL DE AYACUCHO', 0, 1, 'C');
+
+       
+        $this->SetX(55);
+        $this->SetFont('helvetica', 'I', 10);
+        $this->SetTextColor(85, 85, 85); // Gris oscuro
+        $this->Cell(100, 6, 'DIRECCIÓN REGIONAL DE EDUCACIÓN DE AYACUCHO', 0, 1, 'C');
+
+
+        $this->SetX(55);
+        $this->SetFont('helvetica', 'I', 10);
+        $this->SetTextColor(85, 85, 85); // Gris oscuro
+        $this->Cell(100, 6, 'DIRECCION DE ADMINISTRACION', 0, 1, 'C');
+
+
+        $this->SetDrawColor(52, 152, 219);
+        $this->SetLineWidth(0.8);
+        $this->Line(15, 44, 195, 44);
+
+        $this->Ln(5); // Espacio adicional
+    }
+
+  public function Footer() {
+    // Posicionar a 15 mm del final de la página
+    $this->SetY(-15);
+
+    // Línea superior del footer
+    $this->SetDrawColor(189, 195, 199);
+    $this->SetLineWidth(0.5);
+    $this->Line(15, $this->GetY() - 5, 195, $this->GetY() - 5);
+
+    // Estilo del texto
+    $this->SetFont('helvetica', 'I', 8);
+    $this->SetTextColor(100, 100, 100);
+
+    // Texto de número de página centrado
+    $this->Cell(0, 10, 'Página ' . $this->getAliasNumPage() . ' de ' . $this->getAliasNbPages(), 0, 0, 'C');
+
+    // Reset de estilo
+    $this->SetTextColor(0, 0, 0);
+    $this->SetLineWidth(0.2);
+
+    }
+}
+
+
+$pdf = new MYPDF();
+// set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Marycielo');
 $pdf->SetTitle('Reporte de movimiento');
 
-//asignar los margenes
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetMargins(PDF_MARGIN_LEFT, 45, PDF_MARGIN_RIGHT); 
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);                
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);  
 
-// asignar salto de pagina automatico
+
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
-// asignar tipo de letra y tamaño
-$pdf->SetFont('helvetica', 'B', 9);
+$pdf->SetFont('helvetica', '', 8);
 
-// añadir pagina
+
 $pdf->AddPage();
 
-//
-$pdf->writeHTML($contenido_pdf);
 
-//Close and output PDF document
-ob_clean();
-$pdf->Output('sd', 'I');
+$pdf->writeHTML($contenido_pdf, true, false, true, false, '');
 
-        
+$pdf->Output('reporte_movimiento_' . date('Ymd_His') . '.pdf', 'I');
     }
