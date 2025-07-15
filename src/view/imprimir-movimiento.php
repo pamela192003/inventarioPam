@@ -183,6 +183,8 @@ $contenido_pdf .= '
   
     require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
 
+  
+
     $pdf = new TCPDF();
 
     // set document information
