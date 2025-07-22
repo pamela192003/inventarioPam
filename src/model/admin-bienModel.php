@@ -90,9 +90,10 @@ class BienModel
             array_push($arrRespuesta, $objeto);
         }
         return $arrRespuesta;
+    
     }
-}
-public function listarBienes(){
+
+    public function listarBienes(){
     $arrRespuesta = array();
     $sql = $this->conexion->query("SELECT * FROM bienes");
 
@@ -100,4 +101,6 @@ public function listarBienes(){
         array_push($arrRespuesta, $objeto);
     }
     return $arrRespuesta;
-    }
+ }
+}
+    
