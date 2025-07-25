@@ -164,3 +164,18 @@ if ($tipo == "datos_registro") {
     }
     echo json_encode($arr_Respuesta);
 }
+
+if ($tipo == "buscar_ambientes") {
+    $arr_Respuesta = array('status' => false, 'msg' => 'Error_sesion');
+
+    if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)) {
+
+        $ambientes = $objAmbiente->obtenerTodosLosAmbientes();
+
+        $arr_Respuesta['status'] = true;
+        $arr_Respuesta['msg'] = 'correcto';
+        $arr_Respuesta['ambientes'] = $ambientes;
+    }
+
+    echo json_encode($arr_Respuesta);
+}
