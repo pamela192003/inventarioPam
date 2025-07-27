@@ -237,7 +237,7 @@ class MYPDF extends TCPDF {
 $pdf = new MYPDF();
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('pam');
-$pdf->SetTitle('lista de usuarios');
+$pdf->SetTitle('lista de instituciones');
 
 $pdf->SetMargins(PDF_MARGIN_LEFT, 45, PDF_MARGIN_RIGHT); 
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);                
