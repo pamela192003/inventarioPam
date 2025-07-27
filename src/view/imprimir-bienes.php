@@ -1,7 +1,9 @@
 <?php
+$ruta = explode("/",$_GET['views']);
+
     $curl = curl_init(); //inicia la sesión cURL
     curl_setopt_array($curl, array(
-        CURLOPT_URL => BASE_URL_SERVER."src/control/Institucion.php?tipo=listar&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
+        CURLOPT_URL => BASE_URL_SERVER."src/control/Bien.php?tipo=listarBienes&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
         CURLOPT_RETURNTRANSFER => true, //devuelve el resultado como una cadena del tipo curl_exec
         CURLOPT_FOLLOWLOCATION => true, //sigue el encabezado que le envíe el servidor
         CURLOPT_ENCODING => "", // permite decodificar la respuesta y puede ser"identity", "deflate", y "gzip", si está vacío recibe todos los disponibles.
@@ -32,7 +34,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Lista de instituciones</title>
+  <title>Lista de bienes</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -106,29 +108,39 @@
 </head>
 <body>
 
-  <h2>LISTA DE INSTITUCIONES</h2>
+  <h2>LISTA DE BIENES</h2>
 
   <table>
     <thead>
       <tr>
         <th>ITEM</th>
-        <th>BENEFICIARIO</th>
-        <th>CODIGO MODULAR</th>
-        <th>RUC</th>
-        <th>NOMBRE</th>
+        <th>INGRESO BIEN</th>
+        <th>AMBIENTE</th>
+        <th>COD_PATRIMONIAL</th>
+        <th>DENOMINACION</th>
+        <th>MARCA</th>
+        <th>MODELO</th>
+        <th>TIPO</th>
+        <th>VALOR</th>
+        <th>SITUACION</th>
       </tr>
     </thead>
       <tbody>
       ';
  
     $contador = 1;
-    foreach ($contenido as $institucion) {
+    foreach ($contenido as $bien) {
        $contenido_pdf .= "<tr>";
         $contenido_pdf .=  "<td>" . $contador . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->beneficiarioname . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->cod_modular . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->ruc . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->nombre . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->ingresoname . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->ambientename . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->cod_patrimonial . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->denominacion . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->marca . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->modelo . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->tipo . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->valor . "</td>";
+        $contenido_pdf .=  "<td>" . $bien->situacion . "</td>";
         $contenido_pdf .=  "</tr>";
         $contador +=1;
     }
@@ -237,7 +249,7 @@ class MYPDF extends TCPDF {
 $pdf = new MYPDF();
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('pam');
-$pdf->SetTitle('lista de usuarios');
+$pdf->SetTitle('lista de bienes');
 
 $pdf->SetMargins(PDF_MARGIN_LEFT, 45, PDF_MARGIN_RIGHT); 
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);                
@@ -254,5 +266,5 @@ $pdf->AddPage();
 
 $pdf->writeHTML($contenido_pdf, true, false, true, false, '');
 
-$pdf->Output('lista_instituciones_' . date('Ymd_His') . '.pdf', 'I');
+$pdf->Output('lista_bienes_' . date('Ymd_His') . '.pdf', 'I');
 }

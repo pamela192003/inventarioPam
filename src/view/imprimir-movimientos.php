@@ -1,7 +1,7 @@
 <?php
     $curl = curl_init(); //inicia la sesión cURL
     curl_setopt_array($curl, array(
-        CURLOPT_URL => BASE_URL_SERVER."src/control/Institucion.php?tipo=listar&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
+        CURLOPT_URL => BASE_URL_SERVER."src/control/Movimiento.php?tipo=listarMovimientos&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
         CURLOPT_RETURNTRANSFER => true, //devuelve el resultado como una cadena del tipo curl_exec
         CURLOPT_FOLLOWLOCATION => true, //sigue el encabezado que le envíe el servidor
         CURLOPT_ENCODING => "", // permite decodificar la respuesta y puede ser"identity", "deflate", y "gzip", si está vacío recibe todos los disponibles.
@@ -32,7 +32,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Lista de instituciones</title>
+  <title>Lista de movimientos</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -106,29 +106,33 @@
 </head>
 <body>
 
-  <h2>LISTA DE INSTITUCIONES</h2>
+  <h2>LISTA DE MOVIMIENTOS</h2>
 
   <table>
     <thead>
       <tr>
         <th>ITEM</th>
-        <th>BENEFICIARIO</th>
-        <th>CODIGO MODULAR</th>
-        <th>RUC</th>
-        <th>NOMBRE</th>
+        <th>AMBIENTE ORIGEN</th>
+        <th>AMBIENTE DESTINO</th>
+        <th>USUARIO REGISTRO</th>
+        <th>FECHA</th>
+        <th>DESCRIPCION</th>
+        <th>INSTITUCION</th>
       </tr>
     </thead>
       <tbody>
       ';
  
     $contador = 1;
-    foreach ($contenido as $institucion) {
+    foreach ($contenido as $movimientos) {
        $contenido_pdf .= "<tr>";
         $contenido_pdf .=  "<td>" . $contador . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->beneficiarioname . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->cod_modular . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->ruc . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->nombre . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->origen . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->destino . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->usuario . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->fecha_registro . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->descripcion . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->institucion . "</td>";
         $contenido_pdf .=  "</tr>";
         $contador +=1;
     }
@@ -237,7 +241,7 @@ class MYPDF extends TCPDF {
 $pdf = new MYPDF();
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('pam');
-$pdf->SetTitle('lista de usuarios');
+$pdf->SetTitle('lista de movimientos');
 
 $pdf->SetMargins(PDF_MARGIN_LEFT, 45, PDF_MARGIN_RIGHT); 
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);                
@@ -254,5 +258,5 @@ $pdf->AddPage();
 
 $pdf->writeHTML($contenido_pdf, true, false, true, false, '');
 
-$pdf->Output('lista_instituciones_' . date('Ymd_His') . '.pdf', 'I');
+$pdf->Output('lista_movimientos_' . date('Ymd_His') . '.pdf', 'I');
 }

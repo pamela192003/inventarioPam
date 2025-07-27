@@ -1,7 +1,7 @@
 <?php
     $curl = curl_init(); //inicia la sesión cURL
     curl_setopt_array($curl, array(
-        CURLOPT_URL => BASE_URL_SERVER."src/control/Institucion.php?tipo=listar&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
+        CURLOPT_URL => BASE_URL_SERVER."src/control/Usuario.php?tipo=listarUsarios&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
         CURLOPT_RETURNTRANSFER => true, //devuelve el resultado como una cadena del tipo curl_exec
         CURLOPT_FOLLOWLOCATION => true, //sigue el encabezado que le envíe el servidor
         CURLOPT_ENCODING => "", // permite decodificar la respuesta y puede ser"identity", "deflate", y "gzip", si está vacío recibe todos los disponibles.
@@ -24,7 +24,7 @@
         echo "cURL Error #:" . $err; // mostramos el error
     } else {
         $respuesta = json_decode($response);
-        $contenido = $respuesta->contenido;
+        $contenido = $respuesta->usuarios;
        // print_r($respuesta);
       $contenido_pdf = '';
      $contenido_pdf = '
@@ -32,7 +32,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Lista de instituciones</title>
+  <title>Lista de usuarios</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -106,29 +106,33 @@
 </head>
 <body>
 
-  <h2>LISTA DE INSTITUCIONES</h2>
+  <h2>LISTA DE USUARIOS</h2>
 
   <table>
     <thead>
       <tr>
         <th>ITEM</th>
-        <th>BENEFICIARIO</th>
-        <th>CODIGO MODULAR</th>
-        <th>RUC</th>
-        <th>NOMBRE</th>
+        <th>DNI</th>
+        <th>NOMBRE TY APELLIDOS</th>
+        <th>CORREO</th>
+        <th>TELEFONO</th>
+        <th>ESTADO</th>
+        <th>FECHA REGISTRO</th>
       </tr>
     </thead>
       <tbody>
       ';
  
     $contador = 1;
-    foreach ($contenido as $institucion) {
+    foreach ($contenido as $usuario) {
        $contenido_pdf .= "<tr>";
         $contenido_pdf .=  "<td>" . $contador . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->beneficiarioname . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->cod_modular . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->ruc . "</td>";
-        $contenido_pdf .=  "<td>" . $institucion->nombre . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->dni . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->nombres_apellidos . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->correo . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->telefono . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->estado . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->fecha_registro . "</td>";
         $contenido_pdf .=  "</tr>";
         $contador +=1;
     }
@@ -254,5 +258,5 @@ $pdf->AddPage();
 
 $pdf->writeHTML($contenido_pdf, true, false, true, false, '');
 
-$pdf->Output('lista_instituciones_' . date('Ymd_His') . '.pdf', 'I');
+$pdf->Output('lista_usuarios_' . date('Ymd_His') . '.pdf', 'I');
 }

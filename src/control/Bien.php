@@ -232,7 +232,13 @@ if ($tipo == "listarBienes") {
         $arr_Respuesta = array('status' => false, 'msg' => 'Error_Sesion');
     if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)){
         $arr_Bienes = $objBien->listarBienes();
-        $arr_Respuesta['bienes'] = $arr_Bienes;
+        foreach ($arr_Bienes as $bien) {
+            $ingresobien = $objIngreso->buscarIngresoBienById($bien->id_ingreso_bienes);
+            $ambiente = $objAmbiente->buscarAmbienteById($bien->id_ambiente);
+           $bien->ingresoname = $ingresobien->detalle;
+           $bien->ambientename = $ambiente->detalle;
+        }
+        $arr_Respuesta['contenido'] = $arr_Bienes;
         $arr_Respuesta['status'] = true;
         $arr_Respuesta['msg'] = 'correcto';
     } 
