@@ -42,7 +42,7 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <a href="<?=BASE_URL ?>reporte-bienes" class="btn btn-outline-warning">Imprimir EXEL<i class="fa fa-file excel"></i></a>
+                <a href="<?=BASE_URL ?>reporte-bienes" class="btn btn-outline-warning">Imprimir EXCEL<i class="fa fa-file excel"></i></a>
                 <a href="<?=BASE_URL ?>imprimir-bienes" class="btn btn-outline-danger">Imprimir PDF<i class="fa fa-file pdf"></i></a>
                 
                 <h4 class="card-title">Resultados de Búsqueda</h4>
